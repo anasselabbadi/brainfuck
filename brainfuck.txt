@@ -1,0 +1,279 @@
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+BrainFuck Programming Tutorial(simple)
+by: Anass
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+## INTRODUCTION
+
+**Brainfuck** is probably the craziest language i have ever had the pleasure of coming across. And, yes, there are quite a few tutorials that you will find on google about the language and how to program in it
+
+Brainfuck, language itself, is a *Turing-complete language* created by Urban Müller. The language only consists of 8 operators, yet with the 8 operators, `<>+-[],.` you are capable of writing almost any program you can think of. 
+
+To write programs in brainfuck, i would suggest you get a few things first. 
+
+
+First of all you will need an interpreter or a compiler
+
+Next, i would suggest an ASCII chart with all the ASCII chars and their decimal equivalent value. Next on the items is would be a calculator. Any will do. It will help you figure out the Greatest Common Factors for use in incrementing a memory block quickly. 
+
+Lastly, i would recommend having no life and lots of time on your hands to actually want to sit and write programs in this amazingly inefficient language. I promise you, if you take the time to sit and write a program in brainfuck for an hour or five, you will definitely see why it deserves its name.
+
+---
+
+## BASICS
+
+The idea behind `brainfuck` is memory manipulation. Basically you are given an array of 30,000 1byte memory blocks. The array size is actually dependent upon the implementation used in the compiler or interpretor, but standard brainfuck states 30,000. Within this array, you can increase the memory pointer, increase the value at the memory pointer, etc. Let me first present to you the 8 operators available to us.
+
+```brainfuck
+> = increases memory pointer, or moves the pointer to the right 1 block.
+< = decreases memory pointer, or moves the pointer to the left 1 block.
++ = increases value stored at the block pointed to by the memory pointer
+- = decreases value stored at the block pointed to by the memory pointer
+[ = like c while(cur_block_value != 0) loop.
+] = if block currently pointed to's value is not zero, jump back to [
+, = like c getchar(). input 1 character.
+. = like c putchar(). print 1 character to the console
+```
+
+#### Some rules:
+
+- Any arbitrary character besides the 8 listed above should be ignored by the
+compiler or interpretor. Characters besides the 8 operators should be con-
+sidered comments.
+
+- All memory blocks on the "array" are set to zero at the beginning of the
+program. And the memory pointer starts out on the very left most memory
+block.
+
+- Loops may be nested as many times as you want. But all [ must have a corre-
+sponding ].
+
+---
+
+#### The simplest program in brainfuck is:
+
+```brainfuck
+[-]
+```
+
+Well, that's what they say anyway, but I hardly consider that a program. All it does is enter a loop that decreases the value stored at the current memory pointer until it reaches zero, then exits the loop. But since all memory blocks start out at zero, it will never enter that loop. 
+
+#### So lets write a real program.
+
+```brainfuck
++++++[-]
+```
+
+
+This is equivalent in C to:
+
+```c
+*p=+5;
+while(*p != 0){
+*p--;
+}
+```
+
+In that program we are incrementing the current memory pointers value to 5, then entering a loop that decreases the value located at the memory pointer till it is zero, then exits the loop.
+
+```brainfuck
+>>>>++
+```
+
+
+This will move the memory pointer to the fourth memory block, and increment the value stored there by 2. So it looks like
+
+```brainfuck
+memory blocks
+-------------
+[0][0][0][2][0][0]...
+^
+memory pointer
+```
+
+As you can see in the 'k-rad' ASCII diagram, our memory pointer points to the fourth memory block, and it incremented the value there by 1. since there was nothing there before, it now contains the value: 2. If we take that same program, and add more onto the end of it like:
+
+```brainfuck
+>>>>++<<+>>+
+```
+
+
+At the end of our program, our memory layout will look like this:
+
+```brainfuck
+memory blocks
+-------------
+[0][1][0][3][0][0]...
+^
+memory pointer
+```
+
+The pointer was moved to the fourth block, incremented the value by 2, moved back 2 blocks to the second block, incremented the valued stored there by 1, and then the pointer moved 2 blocks to the right again to the fourth block and incremented the value stored there by one. And at the end of the program the memory pointer lies back on the fourth memory block. That is fine and dandy, but we can't really see anything. So lets write a program that will produce actual output.
+
+When cavemen started scrawling shit on the walls, the first ever picture drawn was a man waving at a picture of the planet earth. I am not about to break that trend. so i present "Hello World!" in brainfuck.
+
+```brainfuck
+>+++++++++[<++++++++>-]<.>+++++++[<++++>-]<+.+++++++..+++.[-]
+>++++++++[<++++>-] <.>+++++++++++[<++++++++>-]<-.--------.+++
+.------.--------.[-]>++++++++[<++++>- ]<+.[-]++++++++++.
+```
+
+
+We must remember that we are working with numbers, so we must use a character's ASCII decimal number to represent it. then when we print it, will print the value as an ASCII character. Lets break this program down.
+
+```brainfuck
+>+++++++++[<++++++++>-]<.
+```
+
+Lets break this part down farther using our diagrams.
+
+`>`
+
+First you can see, that we increment the memory pointer to the next memory block leaving the first memory block at zero.
+
+```brainfuck
+memory blocks
+-------------
+[0][0][0][0][0][0]...
+^
+memory pointer
+```
+
+We then increase the value at our current memory block to 9.
+
+```brainfuck
++++++++++
+```
+
+Leaving our diagram like this:
+
+```brainfuck
+memory blocks
+-------------
+[0][9][0][0][0][0]...
+^
+memory pointer
+```
+
+Since the block we are on contains a non-zero value, we then enter the loop.
+
+```brainfuck
+[
+```
+
+Now that we are in the loop Then we move the memory pointer one block to the left
+
+
+`<`
+
+Which gives us:
+
+```brainfuck
+memory blocks
+-------------
+[0][9][0][0][0][0]...
+^
+memory pointer
+```
+
+And we increment the memory blocks stored value by 8.
+
+```brainfuck
+++++++++
+```
+
+So our diagram looks like:
+
+```brainfuck
+memory blocks
+-------------
+[8][9][0][0][0][0]...
+^
+memory pointer
+```
+
+Then we move the memory pointer one block to the right, to the second memory block again, and decrease the value stored there from 9 to 8.
+
+```brainfuck
+>-
+```
+
+Diagram:
+
+```brainfuck 
+memory blocks
+-------------
+[8][8][0][0][0][0]...
+^
+memory pointer
+```
+
+We then hit the end of our loop.
+
+
+```brainfuck
+]
+```
+
+
+It checks to see if the memory block the pointer currently points to contains the value zero, but current memory block's stored value is not zero, so the loop starts over. Moving the pointer to the left. Increasing it by 8, and moving the pointer to the right. and decreasing it by 1. After the 2nd pass of all that, our diagram now looks like:
+
+```brainfuck 
+memory blocks
+-------------
+[16][7][0][0][0][0]...
+^
+memory pointer
+```
+
+It will continue this process over and over until the value stored at the second memory block is zero. It then exits the loop. Once we have exited the loop. The program moves the pointer back to the first memory block one final time, and prints the value stored there. If you followed that, you would see that we increased the first memory blocks stored value by 8, 9 times. We know that 8*9=72 and 72 is the ASCII decimal value for 'H'.
+
+```brainfuck
+<.
+```
+
+And the diagram:
+
+```brainfuck
+memory blocks
+-------------
+[72][0][0][0][0][0]...
+^
+memory pointer
+```
+
+call the print function. and 'H' is printed to the console.
+
+Wow...that was a lot of freaking work just to print one single character. Why you may ask would you want to waste your time programming is this horribly inefficient programming language?!? Well, because some of us hackers that actually like to do fun and challenging things to expand our minds and make us think and aren't just out to hax0r up a gibson or two to show everyone who's teh 1337. Anyways, carrying on...
+
+If we were to write that in C, it would be like:
+
+```c
+++p;
+*p=+9;
+while(*p != 0){
+--p;
+*p=+8;
+--p;
+--*p;
+}
+--p;
+putchar(*p);
+```
+this is my Hello World with BrainFuck 
+*************************************
+>+++++++++[<++++++++>-]<.
+>>++++++++++[<++++++++++>-]<+>.
+>++++++++++[<++++++++++>-]<++++++++<>.
+>>++++++++++[<++++++++++>-]<++++++++<>.
+>>++++++++++[<+++++++++++>-]<+>.
+>.
+>++++++++++[<+++++++++>-]<--->.
+>++++++++++[<+++++++++++>-]<+>.
+>++++++++++[<+++++++++++>-]<++++>.
+>++++++++++[<++++++++++>-]<++++++++<>.
+>>++++++++++[<++++++++++>-]
+**************************************
